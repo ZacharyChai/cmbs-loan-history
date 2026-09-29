@@ -8,7 +8,8 @@ which stops `gold` from running on data that hasn't passed.
 
 1. Update every `notebook_path` in `monthly_refresh.json` if your Git folder isn't at
    `/Workspace/Users/zachchainy@gmail.com/cmbs-loan-history` (check the path in the
-   workspace file browser).
+   workspace file browser). This is the Databricks workspace login, which is separate
+   from the SEC EDGAR contact email in `src/config.py`.
 2. `catalog`, `schema` and `volume` in `base_parameters` default to `workspace`, `cmbs`
    and `filings`, matching `notebooks/00_setup.py`. Change both files together if you
    used different names.
