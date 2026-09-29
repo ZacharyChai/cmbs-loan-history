@@ -1,0 +1,20 @@
+# Downloaded filings, listings and derived files: reproducible from EDGAR, and large
+data/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Credentials and Databricks local config: never commit
+.env
+*.token
+.databrickscfg
+.databricks/
+
+# Local assistant instructions
+CLAUDE.md
+
+# OS
+.DS_Store

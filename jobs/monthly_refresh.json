@@ -1,0 +1,90 @@
+{
+  "name": "cmbs-loan-history-monthly-refresh",
+  "tasks": [
+    {
+      "task_key": "fetch",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/zachchainy@gmail.com/cmbs-loan-history/notebooks/01_fetch",
+        "base_parameters": {
+          "catalog": "workspace",
+          "schema": "cmbs",
+          "volume": "filings",
+          "refresh_lists": "true"
+        }
+      }
+    },
+    {
+      "task_key": "bronze",
+      "depends_on": [
+        {
+          "task_key": "fetch"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/zachchainy@gmail.com/cmbs-loan-history/notebooks/02_bronze",
+        "base_parameters": {
+          "catalog": "workspace",
+          "schema": "cmbs",
+          "volume": "filings"
+        }
+      }
+    },
+    {
+      "task_key": "silver",
+      "depends_on": [
+        {
+          "task_key": "bronze"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/zachchainy@gmail.com/cmbs-loan-history/notebooks/03_silver",
+        "base_parameters": {
+          "catalog": "workspace",
+          "schema": "cmbs"
+        }
+      }
+    },
+    {
+      "task_key": "checks",
+      "depends_on": [
+        {
+          "task_key": "silver"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/zachchainy@gmail.com/cmbs-loan-history/notebooks/04_checks",
+        "base_parameters": {
+          "catalog": "workspace",
+          "schema": "cmbs",
+          "volume": "filings"
+        }
+      }
+    },
+    {
+      "task_key": "gold",
+      "depends_on": [
+        {
+          "task_key": "checks"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/zachchainy@gmail.com/cmbs-loan-history/notebooks/05_gold",
+        "base_parameters": {
+          "catalog": "workspace",
+          "schema": "cmbs"
+        }
+      }
+    }
+  ],
+  "schedule": {
+    "quartz_cron_expression": "0 0 14 28 * ?",
+    "timezone_id": "America/New_York",
+    "pause_status": "PAUSED"
+  },
+  "max_concurrent_runs": 1,
+  "email_notifications": {
+    "on_failure": [
+      "zachchainy@gmail.com"
+    ]
+  }
+}

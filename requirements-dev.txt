@@ -1,0 +1,5 @@
+-r requirements.txt
+pytest>=8.0
+# Local Spark for the tests. Databricks serverless supplies its own Spark.
+pyspark==3.5.3
+delta-spark==3.2.1
