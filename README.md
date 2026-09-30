@@ -15,13 +15,14 @@ and DSCR fallback chains, the defeasance test) come from `src/parse_absee.py` an
 
 ## What's verified, and what isn't yet
 
-Everything below was run and checked against **local Spark 3.5.3 with Delta Lake
-3.2.1, ANSI mode on**, against all 225 real cached ABS-EE and ABS-EE/A filings for both
-deals. It has not yet run on Databricks itself. Local Spark reproduces the Delta
-semantics this pipeline depends on (MERGE, CHECK constraints, time travel) but not
-Databricks-specific things: `_metadata.file_path` on Unity Catalog compute, volume
-reads and writes, or serverless job execution. Those are exercised the first time the
-notebooks run on Databricks, not before.
+Everything below was first run and checked against **local Spark 3.5.3 with Delta
+Lake 3.2.1, ANSI mode on**, against all 225 real cached ABS-EE and ABS-EE/A filings
+for both deals. Notebooks `00_setup` through `04_checks` have since been run on an
+actual Databricks Free Edition workspace against the same real EDGAR data, and every
+number matches the local run exactly: 9,400 bronze records, 7,194 silver loan-months,
+and all seven checks passing with the same tie-out figures (see the screenshot below).
+`05_gold` and the scheduled job (`jobs/monthly_refresh.json`) are the remaining pieces
+not yet confirmed on Databricks.
 
 ## Architecture
 
@@ -48,7 +49,10 @@ a re-run or the monthly schedule loads just the new month.
 
 ## Results
 
-All figures are from the local Spark run against the full 225-filing history.
+All figures below match exactly between the local Spark run and the actual Databricks
+Free Edition run against the full 225-filing history.
+
+![04_checks output on Databricks: all seven checks passing](docs/screenshots/04_checks_all_pass.webp)
 
 - **Bronze:** 9,400 `<assets>` records across 225 filings (114 for GS6, 111 for GS7).
 - **Silver:** 7,194 loan-months, one row per `(deal_id, loan_id, reporting_period_end)`.
