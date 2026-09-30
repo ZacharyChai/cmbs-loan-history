@@ -17,12 +17,12 @@ and DSCR fallback chains, the defeasance test) come from `src/parse_absee.py` an
 
 Everything below was first run and checked against **local Spark 3.5.3 with Delta
 Lake 3.2.1, ANSI mode on**, against all 225 real cached ABS-EE and ABS-EE/A filings
-for both deals. Notebooks `00_setup` through `04_checks` have since been run on an
+for both deals. Notebooks `00_setup` through `05_gold` have since been run on an
 actual Databricks Free Edition workspace against the same real EDGAR data, and every
 number matches the local run exactly: 9,400 bronze records, 7,194 silver loan-months,
-and all seven checks passing with the same tie-out figures (see the screenshot below).
-`05_gold` and the scheduled job (`jobs/monthly_refresh.json`) are the remaining pieces
-not yet confirmed on Databricks.
+all seven checks passing with the same tie-out figures, and 1,568 gold monthly-panel
+rows (see the screenshots below). The scheduled job (`jobs/monthly_refresh.json`) is
+the remaining piece not yet confirmed on Databricks.
 
 ## Architecture
 
@@ -67,7 +67,10 @@ Free Edition run against the full 225-filing history.
     snapshot in balance, status, defeasance flag, or property type on any of the 66
     loans.
 - **Gold:** 1,568 monthly-panel rows (one per deal, month, and property type present
-  that month).
+  that month), and 222 pool-summary rows (one per deal and month: 113 months for GS6,
+  109 for GS7).
+
+![05_gold pool summary on Databricks, last 12 months](docs/screenshots/05_gold_pool_summary.webp)
 
 ### The reference count correction
 
