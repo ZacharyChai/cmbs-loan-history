@@ -29,6 +29,8 @@ results = checks.run_checks(
     spark, t("bronze_absee_assets"), t("silver_loan_month"), published,
     [d["tie_out_accession"] for d in DEALS],
 )
+for r in results:
+    print(r.line())
 (
     spark.createDataFrame([(r.name, r.passed, r.detail) for r in results], "check string, passed boolean, detail string")
     .withColumn("run_at", F.current_timestamp())
